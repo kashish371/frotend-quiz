@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quiz App</title>
   <style>
     body {
@@ -71,277 +70,269 @@
       text-align: center;
       margin-top: 20px;
     }
+
+    .summary {
+      margin-top: 20px;
+    }
+
+    .summary-item {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+
+    .wrong {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
-
 <body>
   <div class="quiz-container">
     <h1>HTML/CSS/JS Quiz</h1>
     <div id="quiz"></div>
     <button id="submit-btn" disabled>Submit Answer</button>
     <div id="result"></div>
+    <div class="summary" id="summary"></div>
   </div>
 
   <script>
-    const questions = [
-      {
-        question: "Which HTML tag is used to define an internal style sheet?",
-        options: ["&lt;style&gt;", "&lt;script&gt;", "&lt;css&gt;", "&lt;link&gt;"],
-        answer: "<style>"
-      },
-      {
-        question: "What is the correct HTML tag for inserting a line break?",
-        options: ["&lt;break&gt;", "&lt;br&gt;", "&lt;lb&gt;", "&lt;line&gt;"],
-        answer: "<br>"
-      },
-      {
-        question: "Which attribute is used to provide a unique identifier to an HTML element?",
-        options: ["class", "id", "style", "name"],
-        answer: "id"
-      },
-      {
-        question: "Which of the following tags is used to create a hyperlink in HTML?",
-        options: ["&lt;a&gt;", "&lt;link&gt;", "&lt;href&gt;", "&lt;url&gt;"],
-        answer: "<a>"
-      },
-      {
-        question: "What is the correct HTML element for inserting an image?",
-        options: ["&lt;picture&gt;", "&lt;image&gt;", "&lt;img&gt;", "&lt;src&gt;"],
-        answer: "<img>"
-      },
-      {
-        question: "Which tag is used to create a table row in HTML?",
-        options: ["&lt;tr&gt;", "&lt;td&gt;", "&lt;table&gt;", "&lt;th&gt;"],
-        answer: "<tr>"
-      },
-      {
-        question: "Which tag is used for the largest heading in HTML?",
-        options: ["&lt;heading&gt;", "&lt;h1&gt;", "&lt;h6&gt;", "&lt;head&gt;"],
-        answer: "<h1>"
-      },
-      {
-        question: "Which HTML element is used for inserting a horizontal rule?",
-        options: ["&lt;line&gt;", "&lt;hr&gt;", "&lt;br&gt;", "&lt;border&gt;"],
-        answer: "<hr>"
-      },
-      {
-        question: "Which input type defines a checkbox?",
-        options: ["&lt;input type='check'&gt;", "&lt;input type='checkbox'&gt;", "&lt;input type='tick'&gt;", "&lt;input type='box'&gt;"],
-        answer: "<input type='checkbox'>"
-      },
-      {
-        question: "Which tag is used to group block elements together?",
-        options: ["&lt;div&gt;", "&lt;section&gt;", "&lt;span&gt;", "&lt;group&gt;"],
-        answer: "<div>"
-      },
-      {
-        question: "What attribute is used to open a link in a new tab?",
-        options: ['target=&quot;_new&quot;', 'target=&quot;_blank&quot;', 'open=&quot;true&quot;', 'newtab=&quot;yes&quot;'],
-        answer: 'target=&quot;_blank&quot;'
-      },
-      {
-        question: "Which tag is used for a drop-down list in HTML?",
-        options: ['&lt;input type=&quot;dropdown&quot;&gt;', '&lt;drop&gt;', '&lt;select&gt;', '&lt;option&gt;'],
-        answer: '&lt;select&gt;'
-      },
-      {
-        question: "What is the purpose of the &lt;label&gt; tag in HTML?",
-        options: ['Displays text', 'Defines layout', 'Binds text to a form element', 'Creates a heading'],
-        answer: 'Binds text to a form element'
-      },
-      {
-        question: "Which property is used to change the background color?",
-        options: ['color', 'background-color', 'bgcolor', 'background'],
-        answer: 'background-color'
-      },
-      {
-        question: "What does CSS stand for?",
-        options: ['Computer Style Sheets', 'Creative Style System', 'Cascading Style Sheets', 'Colorful Style Sheets'],
-        answer: 'Cascading Style Sheets'
-      },
-      {
-        question: "Which CSS property changes the text color?",
-        options: ['font-color', 'text-color', 'color', 'fgcolor'],
-        answer: 'color'
-      },
-      {
-        question: 'How do you select an element with id "main"?',
-        options: ['.main', 'main', '#main', '*main'],
-        answer: '#main'
-      },
-      {
-        question: "Which CSS property controls the size of text?",
-        options: ['font-style', 'font-size', 'text-size', 'size'],
-        answer: 'font-size'
-      },
-      {
-        question: "Which of the following is a pseudo-class?",
-        options: ['hover:', ':hover', 'class:hover', '.hover()'],
-        answer: ':hover'
-      },
-      {
-        question: "How do you apply CSS to all &lt;p&gt; elements inside a &lt;div&gt;?",
-        options: ['div p {}', 'p div {}', 'div.p {}', 'p &gt; div {}'],
-        answer: 'div p {}'
-      },
-      {
-        question: "Which CSS property sets the space between lines of text?",
-        options: ['letter-spacing', 'line-height', 'text-spacing', 'spacing'],
-        answer: 'line-height'
-      },
-      {
-        question: "How to make a list display horizontally?",
-        options: ['list-style: horizontal;', 'display: inline;', 'display: flex;', 'float: left;'],
-        answer: 'display: flex;'
-      },
-      {
-        question: "Which CSS rule is used to apply styles to all &lt;h1&gt; and &lt;h2&gt; elements?",
-        options: ['h1, h2 {}', 'h1 h2 {}', '.h1, .h2 {}', 'h1.h2 {}'],
-        answer: 'h1, h2 {}'
-      },
-      {
-        question: "What is the z-index used for?",
-        options: ['To set the zoom level', 'To change the stacking order of elements', 'To define borders', 'To position content vertically'],
-        answer: 'To change the stacking order of elements'
-      },
-      {
-        question: "Which shorthand CSS property is used for margin?",
-        options: ['margins', 'space', 'padding', 'margin'],
-        answer: 'margin'
-      },
-      {
-        question: "Which of the following is not a valid CSS position value?",
-        options: ['relative', 'fixed', 'absolute', 'centered'],
-        answer: 'centered'
-      },
-      {
-        question: "Which keyword is used to declare a variable in JavaScript?",
-        options: ['var', 'int', 'dim', 'declare'],
-        answer: 'var'
-      },
-      {
-        question: "Which of the following is not a JavaScript data type?",
-        options: ['string', 'number', 'boolean', 'float'],
-        answer: 'float'
-      },
-      {
-        question: "What does const mean in JavaScript?",
-        options: ['A variable that can be redeclared', 'A constant reference that cannot change', 'An undefined variable', 'A temporary variable'],
-        answer: 'A constant reference that cannot change'
-      },
-      {
-        question: "What will the following HTML code display?\n&lt;p&gt;Hello &lt;b&gt;World&lt;/b&gt;&lt;/p&gt;",
-        options: ['Hello World (bold)', 'Hello World (normal)', 'Only "World"', 'Error'],
-        answer: 'Hello World (bold)'
-      },
-      {
-        question: "What will this HTML render?\n&lt;h3&gt;This is a heading&lt;/h3&gt;&lt;hr&gt;&lt;p&gt;This is a paragraph&lt;/p&gt;",
-        options: ['A heading with a paragraph below it', 'Only heading', 'Only paragraph', 'Nothing'],
-        answer: 'A heading with a paragraph below it'
-      },
-      {
-        question: "What is the output of this code?\n&lt;ol&gt;&lt;li&gt;Apple&lt;/li&gt;&lt;li&gt;Mango&lt;/li&gt;&lt;/ol&gt;",
-        options: ['Apple, Mango (with numbers)', 'Apple, Mango (bullets)', 'Apple Mango (inline)', 'Error'],
-        answer: 'Apple, Mango (with numbers)'
-      },
-      {
-        question: "What will this form field render?\n&lt;input type=&quot;password&quot; value=&quot;1234&quot;&gt;",
-        options: ['Shows 1234 as dots or asterisks', 'Shows 1234 as plain text', 'No text shown', 'Error'],
-        answer: 'Shows 1234 as dots or asterisks'
-      },
-      {
-        question: "What color is the text?\n&lt;p style=&quot;color: blue;&quot;&gt;This is blue text&lt;/p&gt;",
-        options: ['Red', 'Blue', 'Black', 'Green'],
-        answer: 'Blue'
-      },
-      {
-        question: "What does this code do?\n&lt;div style=&quot;display: none;&quot;&gt;Hello&lt;/div&gt;",
-        options: ['Shows "Hello"', 'Hides "Hello"', 'Changes font', 'Displays "none"'],
-        answer: 'Hides "Hello"'
-      },
-      {
-        question: "What happens here?\n&lt;p style=&quot;text-align: center;&quot;&gt;Centered Text&lt;/p&gt;",
-        options: ['Text is left-aligned', 'Text is centered', 'Text is bold', 'Text is underlined'],
-        answer: 'Text is centered'
-      },
-      {
-        question: "What is the font size here?\n&lt;p style=&quot;font-size: 20px;&quot;&gt;Big Text&lt;/p&gt;",
-        options: ['Default size', '20 inches', '20px', 'Unchanged'],
-        answer: '20px'
-      },
-      {
-        question: "What happens when you hover over this element?\n&lt;style&gt;\ndiv:hover { color: red; }\n&lt;/style&gt;\n&lt;div&gt;Hello&lt;/div&gt;",
-        options: ['Color remains black', 'Color becomes red on hover', 'Text disappears', 'Background changes'],
-        answer: 'Color becomes red on hover'
-      },
-      {
-    question: "What happens when this code runs?\n&lt;script&gt;document.write('Welcome!')&lt;/script&gt;",
-    options: ["Nothing", "Prints Welcome! on the page", "Error", "Opens a popup"],
-    answer: "Prints Welcome! on the page"
+    const questions = [ {
+    question: "What is the correct syntax for useState?",
+    options: [
+      "const [x, setX] = useState()",
+      "useState(x, setX)",
+      "state(x)",
+      "const x = useState()"
+    ],
+    answer: "const [x, setX] = useState()"
   },
   {
-    question: "What will you see?\n&lt;a href='#' style='text-decoration: none;'&gt;Home&lt;/a&gt;",
-    options: ["Blue underlined link", "Plain text", "Link without underline", "Bold link"],
-    answer: "Link without underline"
+    question: "Which hook is used to perform side effects?",
+    options: ["useState", "useEffect", "useMemo", "useCallback"],
+    answer: "useEffect"
   },
   {
-    question: "What is displayed?\n&lt;input type='radio' checked&gt;",
-    options: ["An unchecked radio button", "A checked radio button", "A checkbox", "Nothing"],
-    answer: "A checked radio button"
+    question: "Which statement is true about the following JSX?<br>return (<br>&nbsp;&nbsp;&lt;div&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Hello&lt;/h1&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;World&lt;/p&gt;<br>&nbsp;&nbsp;&lt;/div&gt;<br>);",
+    options: ["Invalid syntax", "Requires Fragment", "Valid JSX", "Only one tag is allowed"],
+    answer: "Valid JSX"
   },
   {
-    question: "What does this HTML do?\n&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World&lt;/i&gt;",
-    options: ["Bold 'Hello' and italic 'World'", "Italic 'Hello' and bold 'World'", "Bold and italic both", "Plain text"],
-    answer: "Bold 'Hello' and italic 'World'"
+    question: "What does JSX stand for?",
+    options: ["JavaScript Syntax", "Java Styled XML", "JavaScript XML", "Java Extension"],
+    answer: "JavaScript XML"
   },
   {
-    question: "What happens here?\n&lt;p style='visibility: hidden;'&gt;Invisible&lt;/p&gt;",
-    options: ["Visible text", "Hidden but space taken", "Completely removed", "Error"],
-    answer: "Hidden but space taken"
+    question: "How do you pass data from parent to child component?",
+    options: ["props", "state", "useRef", "context"],
+    answer: "props"
+  },
+  
+  {
+    question: "What is the output of the following?<br>const arr = [1,2,3];<br>return (<br>&nbsp;&nbsp;&lt;ul&gt;{arr.map(i =&gt; &lt;li&gt;{i}&lt;/li&gt;)}&lt;/ul&gt;<br>);",
+    options: ["Error", "List with 3 items", "Single &lt;li&gt;", "Nothing"],
+    answer: "List with 3 items"
   },
   {
-    question: "What happens when this code is executed?\n&lt;div style='position: absolute; top: 50px; left: 50px;'&gt;Positioned&lt;/div&gt;",
-    options: ["The element is placed 50px from the top and 50px from the left relative to the page", "The element is placed 50px from the top and 50px from the left relative to its parent element", "The element is placed at the bottom left corner", "Nothing happens"],
-    answer: "The element is placed 50px from the top and 50px from the left relative to its parent element"
+    question: "Which of the following is correct syntax to handle an onClick event in React?",
+    options: [
+      "onClick=\"alert('Clicked!')\"",
+      "onClick={alert(\"Clicked!\")}",
+      "onClick={() =&gt; alert(\"Clicked!\")}",
+      "onclick=\"alert('Clicked!')\""
+    ],
+    answer: "onClick={() =&gt; alert(\"Clicked!\")}"
   },
   {
-    question: "What does this CSS code do?\n&lt;div&gt; { margin: 10px 20px 30px 40px; } &lt;/div&gt;",
-    options: ["Sets 10px margin for all sides", "Sets 10px on top, 20px on right, 30px on bottom, and 40px on left", "Sets margin only for left and right", "Sets padding instead of margin"],
-    answer: "Sets 10px on top, 20px on right, 30px on bottom, and 40px on left"
+    question: "Which hook is used to fetch data after mount?",
+    options: ["useEffect", "useState", "useMemo", "useLayoutEffect"],
+    answer: "useEffect"
   },
   {
-    question: "What will be the output of this HTML?\n&lt;div style='border: 5px solid red; padding: 20px;'&gt;Content&lt;/div&gt;",
-    options: ["Content with a red border and no space around it", "Content with a red border and 20px space inside the border", "Content without a border", "No content shown"],
-    answer: "Content with a red border and 20px space inside the border"
+    question: "What is Prop Drilling?",
+    options: [
+      "Passing props deeply",
+      "Sharing props by hook",
+      "Global state",
+      "Updating props"
+    ],
+    answer: "Passing props deeply"
+  },
+
+  {
+    question: "Which syntax is correct for a functional component?",
+    options: [
+      "function App() { return &lt;div&gt;&lt;/div&gt;; }",
+      "class App extends Component {}",
+      "App() =&gt; &lt;div /&gt;",
+      "define App = () =&gt; {}"
+    ],
+    answer: "function App() { return &lt;div&gt;&lt;/div&gt;; }"
   },
   {
-    question: "What does this HTML render?\n&lt;form&gt; &lt;input type='text' placeholder='Enter Name'&gt; &lt;/form&gt;",
-    options: ["A textbox with a placeholder", "A button with placeholder text", "A label with placeholder text", "A disabled textbox"],
-    answer: "A textbox with a placeholder"
+    question: "What is Fragment used for?",
+    options: [
+      "Add CSS",
+      "Return multiple elements",
+      "Delay render",
+      "Convert JSX"
+    ],
+    answer: "Return multiple elements"
   },
   {
-    question: "What will this HTML code display?\n&lt;ol type='A'&gt; &lt;li&gt;First item&lt;/li&gt; &lt;li&gt;Second item&lt;/li&gt; &lt;/ol&gt;",
-    options: ["Numbered list starting from 1", "Numbered list starting from A", "Bulleted list", "No list displayed"],
-    answer: "Numbered list starting from A"
+    question: "What is Context API used for?",
+    options: [
+      "Props validation",
+      "Styling",
+      "Passing global data",
+      "Creating APIs"
+    ],
+    answer: "Passing global data"
   },
   {
-    question: "What will this HTML render?\n&lt;style&gt; h1 { color: red; text-align: center; } &lt;/style&gt; &lt;h1&gt;Welcome to My Website&lt;/h1&gt;",
-    options: ["A red-colored heading centered on the page", "A green-colored heading centered on the page", "A heading without any color or alignment", "A red-colored heading aligned to the left"],
-    answer: "A red-colored heading centered on the page"
+    question: "What is the virtual DOM?",
+    options: [
+      "Real browser DOM",
+      "Copy of DOM stored in memory",
+      "Shadow DOM",
+      "Actual HTML file"
+    ],
+    answer: "Copy of DOM stored in memory"
   },
   {
-    question: "What will happen when this code is executed?\n&lt;div style='width: 300px; height: 300px; background-color: yellow; margin-left: auto; margin-right: auto;'&gt;&lt;/div&gt;",
-    options: ["A yellow square with 300px width and height, centered horizontally", "A yellow square with 300px width and height, centered vertically", "A yellow rectangle with 300px width and 300px height", "No changes to the layout"],
-    answer: "A yellow square with 300px width and height, centered horizontally"
+    question: "Which returns a JSX element?<br>const App = () =&gt; &lt;h1&gt;Hello&lt;/h1&gt;;",
+    options: [
+      "Component class",
+      "Functional component",
+      "Hook",
+      "HTML"
+    ],
+    answer: "Functional component"
   },
-    ];
+  {
+    question: "What will this return?<br>const arr = [1,2,3];<br>return (<br>&nbsp;&nbsp;&lt;ul&gt;{arr.map(i =&gt; &lt;li&gt;{i}&lt;/li&gt;)}&lt;/ul&gt;<br>);",
+    options: ["Error", "List with 3 items", "Single &lt;li&gt;", "Nothing"],
+    answer: "List with 3 items"
+  },
+  {
+    question: "What is the initial value of count?<br>const [count] = useState(10);",
+    options: ["undefined", "0", "10", "Error"],
+    answer: "10"
+  },
+    {
+    question: "What happens if you don't provide a 'key' in a list?",
+    options: [
+      "React crashes",
+      "React displays a warning",
+      "List won't render",
+      "Nothing happens"
+    ],
+    answer: "React displays a warning"
+  },
+  {
+    question: "What is the default behavior of useEffect without a dependency array?",
+    options: [
+      "Runs once after mount",
+      "Runs only on unmount",
+      "Runs on every render",
+      "Runs before render"
+    ],
+    answer: "Runs on every render"
+  },
+  {
+    question: "Which React feature allows you to manage global state without props?",
+    options: ["useState", "Context API", "useEffect", "useMemo"],
+    answer: "Context API"
+  },
+  
+  {
+    question: "What is Fragment used for?",
+    options: [
+      "Add CSS",
+      "Return multiple elements",
+      "Delay render",
+      "Convert JSX"
+    ],
+    answer: "Return multiple elements"
+  },
+  {
+    question: "What will be the output of the following code?<br>const [name, setName] = useState(\"John\");<br>useEffect(() =&gt; { setName(\"Doe\"); }, []);<br>return &lt;h1&gt;{name}&lt;/h1&gt;;",
+    options: ["John", "Doe", "undefined", "No output"],
+    answer: "Doe"
+  },
+  {
+    question: "Which is correct to import useEffect?",
+    options: [
+      "import { useEffect } from \"react\";",
+      "Invalid syntax",
+      "import useEffect()",
+      "Cannot import"
+    ],
+    answer: "import { useEffect } from \"react\";"
+  },
+  {
+    question: "What is the correct syntax for using a React Fragment?",
+    options: ["&lt;Fragment&gt;&lt;/Fragment&gt;", "&lt;&gt;&lt;/&gt;", "&lt;React.Fragment&gt;&lt;/React.Fragment&gt;", "All of the above"],
+    answer: "All of the above"
+  },
+  {
+    question: "What will this code render? const name = 'React'; return &lt;h1&gt;Hello {name}&lt;/h1&gt;;",
+    options: ["Hello name", "Hello React", "Hello {name}", "React"],
+    answer: "Hello React"
+  },
+  {
+    question: "What does the 'children' prop represent in React?",
+    options: [
+      "A built-in hook",
+      "The value returned by useEffect",
+      "The inner content passed between component tags",
+      "An event listener"
+    ],
+    answer: "The inner content passed between component tags"
+  },
+  {
+    question: "What is used for routing in React?",
+    options: [
+      "react-router-dom",
+      "axios",
+      "redux-router",
+      "router-dom"
+    ],
+    answer: "react-router-dom"
+  },
+  {
+    question: "When does the following code run?<br>useEffect(() =&gt; { console.log(\"Hi\"); });",
+    options: [
+      "On first render",
+      "On every render",
+      "Infinitely",
+      "Never"
+    ],
+    answer: "On every render"
+  },
+  {
+    question: "How do you conditionally render JSX?<br>{isLoggedIn ? &lt;Logout /&gt; : &lt;Login /&gt;}",
+    options: ["if", "Ternary operator", "for", "switch"],
+    answer: "Ternary operator"
+  }];
 
     let current = 0;
     let score = 0;
+    const userAnswers = [];
 
     const quizDiv = document.getElementById("quiz");
     const submitBtn = document.getElementById("submit-btn");
     const resultDiv = document.getElementById("result");
+    const summaryDiv = document.getElementById("summary");
+
+    function decodeHTML(str) {
+      return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+    }
 
     function loadQuestion() {
       const q = questions[current];
@@ -351,7 +342,7 @@
           <div class="options">
             ${q.options.map(option => `
               <label>
-                <input type="radio" name="option" value="${option.replace(/&lt;|&gt;/g, tag => tag === '&lt;' ? '<' : '>')}" />
+                <input type="radio" name="option" value="${decodeHTML(option)}" />
                 ${option}
               </label>
             `).join('')}
@@ -368,21 +359,47 @@
 
     submitBtn.addEventListener("click", () => {
       const selectedOption = document.querySelector("input[name='option']:checked");
-      if (selectedOption && selectedOption.value === questions[current].answer) {
+      const selectedValue = selectedOption ? selectedOption.value : null;
+
+      const correctAnswer = decodeHTML(questions[current].answer);
+
+      userAnswers.push({
+        question: questions[current].question,
+        selected: selectedValue,
+        correct: correctAnswer
+      });
+
+      if (selectedValue === correctAnswer) {
         score++;
       }
+
       current++;
+
       if (current < questions.length) {
         loadQuestion();
       } else {
         quizDiv.innerHTML = "";
         submitBtn.style.display = "none";
         resultDiv.textContent = `Quiz Completed! Your Score: ${score}/${questions.length}`;
+
+        showSummary();
       }
     });
+
+    function showSummary() {
+      summaryDiv.innerHTML = "<h2>Answer Review:</h2>" + userAnswers.map((item, index) => {
+        const isCorrect = item.selected === item.correct;
+        return `
+          <div class="summary-item">
+            <p><strong>Q${index + 1}:</strong> ${item.question}</p>
+            <p>Your Answer: <span class="${isCorrect ? 'correct' : 'wrong'}">${item.selected || "No answer"}</span></p>
+            ${!isCorrect ? `<p>Correct Answer: <span class="correct">${item.correct}</span></p>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
 
     loadQuestion();
   </script>
 </body>
-
 </html>
